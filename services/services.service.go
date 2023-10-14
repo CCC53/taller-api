@@ -32,7 +32,7 @@ func getServiceByID(id string) (models.Service, error) {
 func ListServices(pageSize int, page int) ([]models.Service, int64) {
 	services := []models.Service{}
 	var totalCount int64
-	db.DB.Scopes(Paginate(pageSize, page)).Find(&services)
+	db.DB.Scopes(Paginate(pageSize, page)).Order("start_date").Find(&services)
 	db.DB.Model(&services).Count(&totalCount)
 	return services, totalCount
 }
