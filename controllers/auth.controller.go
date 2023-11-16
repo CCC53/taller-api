@@ -29,7 +29,6 @@ func Login(ctx *fiber.Ctx) error {
 	})
 	return ctx.JSON(&fiber.Map{
 		"routes": services.LoadMenu(employee.Role),
-		"token":  token,
 	})
 }
 
@@ -86,5 +85,14 @@ func Logout(ctx *fiber.Ctx) error {
 	})
 	return ctx.JSON(&fiber.Map{
 		"logout": true,
+	})
+}
+
+func FindEmailExistent(ctx *fiber.Ctx) error {
+	var formData models.CheckEmailDTO
+	ctx.BodyParser(&formData)
+	existent := services.FindEmailExistent(formData.Email)
+	return ctx.JSON(&fiber.Map{
+		"existent": existent,
 	})
 }

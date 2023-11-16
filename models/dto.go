@@ -13,3 +13,7 @@ type AssignSparePartDTO struct {
 	SparePartID   string `json:"sparePartID"`
 	QuantityToUse int    `json:"quantityToUse"`
 }
+
+type CheckEmailDTO struct {
+	Email string `json:"email"`
+}

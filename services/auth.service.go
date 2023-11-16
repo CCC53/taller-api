@@ -112,3 +112,9 @@ func UpdateProfile(token string, formData models.Employee) models.EmployeeRespon
 	updated, _ := UpdateEmployee(id, formData)
 	return updated
 }
+
+func FindEmailExistent(email string) bool {
+	var employee models.Employee
+	employeeDB := db.DB.First(&employee, "email = ?", email)
+	return employeeDB.Error == nil
+}
