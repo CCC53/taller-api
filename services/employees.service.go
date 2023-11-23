@@ -70,7 +70,10 @@ func UpdateEmployee(id string, formData models.Employee) (models.EmployeeRespons
 	employeeFound.Name = formData.Name
 	employeeFound.Email = formData.Email
 	employeeFound.Role = formData.Role
-	db.DB.Save(&employeeFound)
+	result := db.DB.Save(&employeeFound)
+	if result.Error != nil {
+		return models.EmployeeResponse{}, result.Error
+	}
 	return MappingEmployee(employeeFound), nil
 }
 

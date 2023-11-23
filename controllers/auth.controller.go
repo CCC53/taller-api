@@ -87,12 +87,3 @@ func Logout(ctx *fiber.Ctx) error {
 		"logout": true,
 	})
 }
-
-func FindEmailExistent(ctx *fiber.Ctx) error {
-	var formData models.CheckEmailDTO
-	ctx.BodyParser(&formData)
-	existent := services.FindEmailExistent(formData.Email)
-	return ctx.JSON(&fiber.Map{
-		"existent": existent,
-	})
-}

@@ -18,7 +18,7 @@ type Vehicle struct {
 	Plate      string                  `gorm:"not null" json:"plate"`
 	Owner      string                  `gorm:"not null" json:"owner"`
 	EmailOwner string                  `gorm:"not null" json:"emailOwner"`
-	Service    *Service                `json:"service,omitempty"`
+	Service    *Service                `gorm:"constraint:OnDelete:CASCADE" json:"service,omitempty"`
 }
 
 func (vehicle *Vehicle) BeforeCreate(tx *gorm.DB) (err error) {

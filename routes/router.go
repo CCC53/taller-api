@@ -13,7 +13,6 @@ func authRouter(router fiber.Router) {
 	router.Get("/validate-role", middlewares.IsAuthenticated, controllers.ValidateRole)
 	router.Get("/me", middlewares.IsAuthenticated, controllers.GetMe)
 	router.Put("/update-profile", middlewares.IsAuthenticated, controllers.UpdateProfile)
-	router.Post("/check-email", middlewares.IsAuthenticated, middlewares.IsAdmin, controllers.FindEmailExistent)
 	router.Get("/logout", controllers.Logout)
 }
 

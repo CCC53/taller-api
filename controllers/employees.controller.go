@@ -59,7 +59,12 @@ func UpdateEmployee(ctx *fiber.Ctx) error {
 	ctx.BodyParser(&employee)
 	employeeRes, err := services.UpdateEmployee(id, employee)
 	if err != nil {
-		ctx.Status(fiber.StatusNotFound)
+		ctx.Status(fiber.StatusBadRequest)
+		if strings.Contains(err.Error(), "duplicate") {
+			return ctx.JSON(&fiber.Map{
+				"error": "Ya existe un usuario con este email",
+			})
+		}
 		return ctx.JSON(&fiber.Map{
 			"error": err.Error(),
 		})
