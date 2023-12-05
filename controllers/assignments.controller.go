@@ -7,6 +7,20 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
+func FindMechanicsAviable(ctx *fiber.Ctx) error {
+	mechanicsAviable := services.ListMechanicsAviable()
+	return ctx.JSON(&fiber.Map{
+		"employeesAviable": mechanicsAviable,
+	})
+}
+
+func FindSaprePartsAviable(ctx *fiber.Ctx) error {
+	sparePartsAviable := services.ListSaparePartsAviable()
+	return ctx.JSON(&fiber.Map{
+		"sparePartsAviable": sparePartsAviable,
+	})
+}
+
 func AssignEmployeeToService(ctx *fiber.Ctx) error {
 	id := ctx.Params("id")
 	var employeeDTO models.AssignEmployeeDTO
@@ -39,9 +53,10 @@ func AssignSparePartToService(ctx *fiber.Ctx) error {
 	})
 }
 
-func RemoveEmployeeFromService(ctx *fiber.Ctx) error {
+func RemoveItemFromService(ctx *fiber.Ctx) error {
 	id := ctx.Params("id")
-	removed, err := services.RemoveEmployeeFromService(id)
+	table := ctx.Params("table")
+	removed, err := services.RemoveItemFromService(table, id)
 	if err != nil {
 		ctx.Status(fiber.StatusBadRequest)
 		return ctx.JSON(&fiber.Map{
@@ -50,33 +65,5 @@ func RemoveEmployeeFromService(ctx *fiber.Ctx) error {
 	}
 	return ctx.JSON(&fiber.Map{
 		"removed": removed,
-	})
-}
-
-func RemoveSparePartFromService(ctx *fiber.Ctx) error {
-	id := ctx.Params("id")
-	removed, err := services.RemoveSparePartFromService(id)
-	if err != nil {
-		ctx.Status(fiber.StatusBadRequest)
-		return ctx.JSON(&fiber.Map{
-			"error": err.Error(),
-		})
-	}
-	return ctx.JSON(&fiber.Map{
-		"removed": removed,
-	})
-}
-
-func FindMechanicsAviable(ctx *fiber.Ctx) error {
-	mechanicsAviable := services.ListMechanicsAviable()
-	return ctx.JSON(&fiber.Map{
-		"employeesAviable": mechanicsAviable,
-	})
-}
-
-func FindSaprePartsAviable(ctx *fiber.Ctx) error {
-	sparePartsAviable := services.ListSaparePartsAviable()
-	return ctx.JSON(&fiber.Map{
-		"sparePartsAviable": sparePartsAviable,
 	})
 }

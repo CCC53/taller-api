@@ -5,15 +5,16 @@ import (
 	"taller-api/models"
 )
 
-func Search(table string, search string, page int, pageSize int) map[string]interface{} {
+func Search(table string, search string, page int, pageSize int, token string) map[string]interface{} {
 	response := make(map[string]interface{})
 	regex := "%" + search + "%"
 	var totalCount int64
 	switch table {
 	case "employees":
+		var id = GetMyID(token)
 		employees := []models.Employee{}
-		db.DB.Scopes(Paginate(pageSize, page)).Where("name ILIKE ?", regex).Find(&employees)
-		db.DB.Model(&employees).Where("name ILIKE ?", regex).Count(&totalCount)
+		db.DB.Scopes(Paginate(pageSize, page)).Where("name ILIKE ?", regex).Find(&employees, "id != ?", id)
+		db.DB.Model(&employees).Where("name ILIKE ? AND id != ?", regex, id).Count(&totalCount)
 		response["data"] = MappingEmployees(employees)
 		response["total"] = totalCount
 	case "services":
@@ -33,29 +34,6 @@ func Search(table string, search string, page int, pageSize int) map[string]inte
 		db.DB.Scopes(Paginate(pageSize, page)).Where("model ILIKE ? OR brand ILIKE ?", regex, regex).Find(&vehicles)
 		db.DB.Model(&vehicles).Where("model ILIKE ? OR brand ILIKE ?", regex, regex).Count(&totalCount)
 		response["data"] = vehicles
-		response["total"] = totalCount
-	}
-	return response
-}
-
-func ResotreData(table string, pageSize int, page int, token string) map[string]interface{} {
-	response := make(map[string]interface{})
-	switch table {
-	case "employees":
-		data, totalCount := ListEmployees(pageSize, page, token)
-		response["data"] = data
-		response["total"] = totalCount
-	case "vehicles":
-		data, totalCount := ListVehicles(pageSize, page)
-		response["data"] = data
-		response["total"] = totalCount
-	case "services":
-		data, totalCount := ListServices(pageSize, page)
-		response["data"] = data
-		response["total"] = totalCount
-	case "spare-parts":
-		data, totalCount := ListSpareParts(pageSize, page)
-		response["data"] = data
 		response["total"] = totalCount
 	}
 	return response

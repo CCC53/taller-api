@@ -67,17 +67,16 @@ func AssignSparePartToService(id string, data models.AssignSparePartDTO) (models
 	return sparePart, nil
 }
 
-func RemoveEmployeeFromService(id string) (bool, error) {
-	employee, err := GetEmployeeByID(id)
-	if err != nil {
-		return false, err
+func RemoveItemFromService(table string, id string) (bool, error) {
+	if table == "employee" {
+		employee, err := GetEmployeeByID(id)
+		if err != nil {
+			return false, err
+		}
+		employee.ServiceID = nil
+		db.DB.Save(&employee)
+		return true, nil
 	}
-	employee.ServiceID = nil
-	db.DB.Save(&employee)
-	return true, nil
-}
-
-func RemoveSparePartFromService(id string) (bool, error) {
 	sparePart, err := GetSparePartByID(id)
 	if err != nil {
 		return false, err

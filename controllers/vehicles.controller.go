@@ -12,7 +12,7 @@ func FindVehicles(ctx *fiber.Ctx) error {
 	page := ctx.QueryInt("page", 1)
 	vehicles, totalCount := services.ListVehicles(pageSize, page)
 	return ctx.JSON(&fiber.Map{
-		"vehicles":   vehicles,
+		"data":       vehicles,
 		"totalCount": totalCount,
 	})
 }

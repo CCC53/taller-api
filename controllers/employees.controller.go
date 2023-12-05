@@ -14,7 +14,7 @@ func FindEmployees(ctx *fiber.Ctx) error {
 	page := ctx.QueryInt("page", 1)
 	employees, totalCount := services.ListEmployees(pageSize, page, tokenString)
 	return ctx.JSON(&fiber.Map{
-		"employees":  employees,
+		"data":       employees,
 		"totalCount": totalCount,
 	})
 }

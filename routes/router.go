@@ -54,13 +54,11 @@ func assignmentsRouter(router fiber.Router) {
 	router.Get("/spare-parts", controllers.FindSaprePartsAviable)
 	router.Put("/employee/:id", controllers.AssignEmployeeToService)
 	router.Put("/spare-part/:id", controllers.AssignSparePartToService)
-	router.Delete("/employee/:id", controllers.RemoveEmployeeFromService)
-	router.Delete("/spare-part/:id", controllers.RemoveSparePartFromService)
+	router.Delete("/:table/:id", controllers.RemoveItemFromService)
 }
 
 func searchesRouter(router fiber.Router) {
 	router.Get("/:table", middlewares.IsAuthenticated, controllers.SearchByTable)
-	router.Get("/restore/:table", middlewares.IsAuthenticated, controllers.ResotreData)
 }
 
 func InitRoutes(app *fiber.App) {

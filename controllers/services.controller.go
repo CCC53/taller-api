@@ -12,7 +12,7 @@ func FindServices(ctx *fiber.Ctx) error {
 	page := ctx.QueryInt("page", 1)
 	services, totalCount := services.ListServices(pageSize, page)
 	return ctx.JSON(&fiber.Map{
-		"services":   services,
+		"data":       services,
 		"totalCount": totalCount,
 	})
 }
