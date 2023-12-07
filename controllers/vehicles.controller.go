@@ -17,12 +17,6 @@ func FindVehicles(ctx *fiber.Ctx) error {
 	})
 }
 
-func FindVehiclesSelect(ctx *fiber.Ctx) error {
-	return ctx.JSON(&fiber.Map{
-		"vehiclesSelect": services.ListVehiclesSelect(),
-	})
-}
-
 func FindVehicle(ctx *fiber.Ctx) error {
 	id := ctx.Params("id")
 	vehicleDB, err := services.GetVehicleByID(id)

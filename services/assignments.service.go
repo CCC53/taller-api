@@ -1,6 +1,7 @@
 package services
 
 import (
+	"strconv"
 	"taller-api/db"
 	"taller-api/enums"
 	"taller-api/models"
@@ -32,16 +33,36 @@ func mapSaprePartsSelect(spareParts []models.SparePart) []models.SelectResponse 
 	return sparePartSelect
 }
 
-func ListMechanicsAviable() []models.SelectResponse {
-	var employees []models.Employee
-	db.DB.Find(&employees, "role = ? AND service_id IS NULL", enums.Mechanic)
-	return mapEmployeesSelect(employees)
+func mapVehiclesSelect(vehicles []models.Vehicle) []models.SelectResponse {
+	vehiclesSelect := []models.SelectResponse{}
+	for _, vehicle := range vehicles {
+		label := vehicle.Brand + "-" + vehicle.Model + "-" + strconv.Itoa(vehicle.Year)
+		vehicleMapped := models.SelectResponse{
+			Value: vehicle.ID,
+			Label: label,
+		}
+		vehiclesSelect = append(vehiclesSelect, vehicleMapped)
+	}
+	return vehiclesSelect
 }
 
-func ListSaparePartsAviable() []models.SelectResponse {
-	var spareParts []models.SparePart
-	db.DB.Find(&spareParts, "disponible > 0")
-	return mapSaprePartsSelect(spareParts)
+func ListItemsAviable(table string) []models.SelectResponse {
+	var data []models.SelectResponse
+	switch table {
+	case "employees":
+		var employees []models.Employee
+		db.DB.Find(&employees, "role = ? AND service_id IS NULL", enums.Mechanic)
+		data = mapEmployeesSelect(employees)
+	case "vehicles":
+		var vehicles []models.Vehicle
+		db.DB.Find(&vehicles)
+		data = mapVehiclesSelect(vehicles)
+	case "spare-parts":
+		var spareParts []models.SparePart
+		db.DB.Find(&spareParts, "disponible > 0")
+		data = mapSaprePartsSelect(spareParts)
+	}
+	return data
 }
 
 func AssignEmployeeToService(id string, employeeID string) (models.EmployeeResponse, error) {

@@ -7,17 +7,10 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-func FindMechanicsAviable(ctx *fiber.Ctx) error {
-	mechanicsAviable := services.ListMechanicsAviable()
+func FindItemsAviable(ctx *fiber.Ctx) error {
+	table := ctx.Params("table")
 	return ctx.JSON(&fiber.Map{
-		"employeesAviable": mechanicsAviable,
-	})
-}
-
-func FindSaprePartsAviable(ctx *fiber.Ctx) error {
-	sparePartsAviable := services.ListSaparePartsAviable()
-	return ctx.JSON(&fiber.Map{
-		"sparePartsAviable": sparePartsAviable,
+		"data": services.ListItemsAviable(table),
 	})
 }
 

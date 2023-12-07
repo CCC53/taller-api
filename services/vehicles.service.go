@@ -1,25 +1,11 @@
 package services
 
 import (
-	"strconv"
 	"taller-api/db"
 	"taller-api/models"
 
 	"gorm.io/gorm"
 )
-
-func mapVehiclesSelect(vehicles []models.Vehicle) []models.SelectResponse {
-	vehiclesSelect := []models.SelectResponse{}
-	for _, vehicle := range vehicles {
-		label := vehicle.Brand + "-" + vehicle.Model + "-" + strconv.Itoa(vehicle.Year)
-		vehicleMapped := models.SelectResponse{
-			Value: vehicle.ID,
-			Label: label,
-		}
-		vehiclesSelect = append(vehiclesSelect, vehicleMapped)
-	}
-	return vehiclesSelect
-}
 
 func ListVehicles(pageSize int, page int) ([]models.Vehicle, int64) {
 	vehicles := []models.Vehicle{}
@@ -27,12 +13,6 @@ func ListVehicles(pageSize int, page int) ([]models.Vehicle, int64) {
 	db.DB.Scopes(Paginate(pageSize, page)).Find(&vehicles)
 	db.DB.Model(&vehicles).Count(&totalCount)
 	return vehicles, totalCount
-}
-
-func ListVehiclesSelect() []models.SelectResponse {
-	vehicles := []models.Vehicle{}
-	db.DB.Find(&vehicles)
-	return mapVehiclesSelect(vehicles)
 }
 
 func GetVehicleByID(id string) (models.Vehicle, error) {

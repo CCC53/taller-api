@@ -26,7 +26,6 @@ func employeesRouter(router fiber.Router) {
 
 func vehiclesRouter(router fiber.Router) {
 	router.Get("/", controllers.FindVehicles)
-	router.Get("/select", controllers.FindVehiclesSelect)
 	router.Get("/:id", controllers.FindVehicle)
 	router.Post("/", middlewares.IsAdmin, controllers.CreateVehicle)
 	router.Put("/:id", middlewares.IsAdmin, controllers.UpdateVehicle)
@@ -50,8 +49,7 @@ func servicesRouter(router fiber.Router) {
 }
 
 func assignmentsRouter(router fiber.Router) {
-	router.Get("/employees", controllers.FindMechanicsAviable)
-	router.Get("/spare-parts", controllers.FindSaprePartsAviable)
+	router.Get("/:table", controllers.FindItemsAviable)
 	router.Put("/employee/:id", controllers.AssignEmployeeToService)
 	router.Put("/spare-part/:id", controllers.AssignSparePartToService)
 	router.Delete("/:table/:id", controllers.RemoveItemFromService)
