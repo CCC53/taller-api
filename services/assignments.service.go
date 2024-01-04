@@ -1,6 +1,7 @@
 package services
 
 import (
+	"errors"
 	"strconv"
 	"taller-api/db"
 	"taller-api/enums"
@@ -81,6 +82,9 @@ func AssignSparePartToService(id string, data models.AssignSparePartDTO) (models
 	var idParsed = uuid.MustParse(id)
 	if err != nil {
 		return models.SparePart{}, err
+	}
+	if data.QuantityToUse > sparePart.Disponible {
+		return models.SparePart{}, errors.New("no se acepta una cantidad superior a la disponible")
 	}
 	sparePart.ServiceID = &idParsed
 	sparePart.Disponible = sparePart.Disponible - data.QuantityToUse

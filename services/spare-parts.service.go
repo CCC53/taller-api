@@ -1,11 +1,18 @@
 package services
 
 import (
+	"errors"
 	"taller-api/db"
 	"taller-api/models"
 
 	"gorm.io/gorm"
 )
+
+func isAviable(name string, supplier string) bool {
+	sparePart := models.SparePart{}
+	sparePartDB := db.DB.First(&sparePart, "name = ? AND supplier = ?", name, supplier)
+	return sparePartDB.Error != nil
+}
 
 func ListSpareParts(pageSize int, page int) ([]models.SparePart, int64) {
 	spareParts := []models.SparePart{}
@@ -26,6 +33,10 @@ func GetSparePartByID(id string) (models.SparePart, error) {
 
 func CreateSparePart(formData models.SparePart) (models.SparePart, error) {
 	sparePart := formData
+	isAviable := isAviable(formData.Name, formData.Supplier)
+	if !isAviable {
+		return models.SparePart{}, errors.New("ya existe un registro con estos datos")
+	}
 	var sparePartDB *gorm.DB = db.DB.Create(&sparePart)
 	if sparePartDB.Error != nil {
 		return models.SparePart{}, sparePartDB.Error
@@ -44,6 +55,10 @@ func UpdateSparePart(id string, formData models.SparePart) (models.SparePart, er
 	sparePartFound.Supplier = formData.Supplier
 	sparePartFound.PurchaseDate = formData.PurchaseDate
 	sparePartFound.Type = formData.Type
+	isAviable := isAviable(sparePartFound.Name, sparePartFound.Supplier)
+	if !isAviable {
+		return models.SparePart{}, errors.New("ya existe un registro con estos datos")
+	}
 	db.DB.Save(&sparePartFound)
 	return sparePartFound, nil
 }

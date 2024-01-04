@@ -38,7 +38,7 @@ func CreateSparePart(ctx *fiber.Ctx) error {
 	if err != nil {
 		ctx.Status(fiber.StatusBadRequest)
 		return ctx.JSON(&fiber.Map{
-			"error": err.Error(),
+			"error": services.Capitalize(err.Error()),
 		})
 	}
 	return ctx.JSON(&fiber.Map{
@@ -54,7 +54,7 @@ func UpdateSparePart(ctx *fiber.Ctx) error {
 	if err != nil {
 		ctx.Status(fiber.StatusNotFound)
 		return ctx.JSON(&fiber.Map{
-			"error": err.Error(),
+			"error": services.Capitalize(err.Error()),
 		})
 	}
 	return ctx.JSON(&fiber.Map{

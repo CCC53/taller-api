@@ -50,7 +50,7 @@ func GenerateToken(employee models.Employee) (string, error) {
 func LoadMenu(role enums.ValidRoles) []models.Routes {
 	routes := []models.Routes{
 		{Route: "employees", Icon: "groups", Label: "Empleados"},
-		{Route: "vehicles", Icon: "directions_car", Label: "Vehiculos"},
+		{Route: "vehicles", Icon: "directions_car", Label: "Vehículos"},
 		{Route: "spare-parts", Icon: "settings", Label: "Refacciones"},
 		{Route: "services", Icon: "car_crash", Label: "Servicios"},
 		{Route: "update-profile", Icon: "account_circle", Label: "Perfil"},
